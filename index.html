@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pourquoi je ne t'aide pas ?</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: #f5f4f0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1rem;
+    }
+
+    .quiz-wrap {
+      background: #ffffff;
+      border-radius: 20px;
+      padding: 2.5rem 2rem;
+      max-width: 520px;
+      width: 100%;
+      box-shadow: 0 4px 32px rgba(0,0,0,0.08);
+    }
+
+    .quiz-header {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 24px;
+      color: #1a1a1a;
+      margin-bottom: 0.4rem;
+      line-height: 1.3;
+    }
+
+    .quiz-subtitle {
+      font-size: 14px;
+      color: #888;
+      margin-bottom: 2rem;
+    }
+
+    .option-btn {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      width: 100%;
+      padding: 14px 18px;
+      margin-bottom: 12px;
+      background: #fff;
+      border: 1px solid #e0e0e0;
+      border-radius: 14px;
+      cursor: pointer;
+      text-align: left;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 15px;
+      color: #1a1a1a;
+      transition: background 0.15s, border-color 0.15s, transform 0.1s;
+    }
+
+    .option-btn:hover:not(:disabled) {
+      background: #f5f4f0;
+      border-color: #bbb;
+      transform: translateX(4px);
+    }
+
+    .option-btn:active:not(:disabled) {
+      transform: scale(0.98);
+    }
+
+    .option-btn:disabled {
+      cursor: default;
+    }
+
+    .option-letter {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 13px;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      border: 1.5px solid #ddd;
+      color: #888;
+      transition: background 0.2s, color 0.2s, border-color 0.2s;
+    }
+
+    .correct .option-letter {
+      background: #1D9E75;
+      border-color: #1D9E75;
+      color: white;
+    }
+
+    .wrong .option-letter {
+      background: #E24B4A;
+      border-color: #E24B4A;
+      color: white;
+    }
+
+    .correct {
+      border-color: #1D9E75 !important;
+      background: #E1F5EE !important;
+      color: #085041 !important;
+    }
+
+    .wrong {
+      border-color: #E24B4A !important;
+      background: #FCEBEB !important;
+      color: #501313 !important;
+    }
+
+    .result-box {
+      margin-top: 1.5rem;
+      padding: 18px 20px;
+      border-radius: 14px;
+      font-size: 15px;
+      display: none;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .result-win {
+      background: #E1F5EE;
+      border: 1px solid #1D9E75;
+      color: #085041;
+    }
+
+    .result-fail {
+      background: #FCEBEB;
+      border: 1px solid #E24B4A;
+      color: #501313;
+    }
+
+    .result-title {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 17px;
+      margin-bottom: 6px;
+    }
+
+    .retry-btn {
+      margin-top: 1rem;
+      padding: 10px 20px;
+      border-radius: 10px;
+      background: transparent;
+      border: 1px solid #ccc;
+      cursor: pointer;
+      font-family: 'Syne', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      color: #1a1a1a;
+      transition: background 0.15s;
+    }
+
+    .retry-btn:hover {
+      background: #f0f0f0;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+<div class="quiz-wrap">
+  <p class="quiz-header">🤔 Pourquoi je ne t'aide pas ?</p>
+  <p class="quiz-subtitle">Une seule bonne réponse. Choisis bien.</p>
+
+  <div id="options">
+    <button class="option-btn" onclick="answer(this, false)">
+      <span class="option-letter">A</span>
+      Tu es moche
+    </button>
+    <button class="option-btn" onclick="answer(this, false)">
+      <span class="option-letter">B</span>
+      Je ne sais pas
+    </button>
+    <button class="option-btn" onclick="answer(this, true)">
+      <span class="option-letter">C</span>
+      Tu n'es pas poli
+    </button>
+    <button class="option-btn" onclick="answer(this, false)">
+      <span class="option-letter">D</span>
+      Tu m'énerves
+    </button>
+  </div>
+
+  <div id="result-win" class="result-box result-win">
+    <p class="result-title">✅ Bonne réponse !</p>
+    <p>C'est bien ça — la politesse, ça compte. Un simple « s'il vous plaît » et je suis tout à toi !</p>
+    <button class="retry-btn" onclick="reset()">Réessayer</button>
+  </div>
+
+  <div id="result-fail" class="result-box result-fail">
+    <p class="result-title">❌ Raté !</p>
+    <p>Hmm, pas tout à fait... Relis bien les options, la bonne raison est cachée là-dedans !</p>
+    <button class="retry-btn" onclick="reset()">Réessayer</button>
+  </div>
+</div>
+
+<script>
+  function answer(btn, isCorrect) {
+    const btns = document.querySelectorAll('.option-btn');
+    btns.forEach(b => b.disabled = true);
+
+    if (isCorrect) {
+      btn.classList.add('correct');
+      document.getElementById('result-win').style.display = 'block';
+    } else {
+      btn.classList.add('wrong');
+      btns.forEach(b => {
+        if (b.getAttribute('onclick').includes('true')) {
+          b.classList.add('correct');
+        }
+      });
+      document.getElementById('result-fail').style.display = 'block';
+    }
+  }
+
+  function reset() {
+    const btns = document.querySelectorAll('.option-btn');
+    btns.forEach(b => {
+      b.disabled = false;
+      b.classList.remove('correct', 'wrong');
+    });
+    document.getElementById('result-win').style.display = 'none';
+    document.getElementById('result-fail').style.display = 'none';
+  }
+</script>
+
+</body>
+</html>
